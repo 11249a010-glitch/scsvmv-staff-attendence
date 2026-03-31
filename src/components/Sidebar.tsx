@@ -17,24 +17,23 @@ const menuItems = [
 
 export const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
   return (
-    <aside className="w-64 border-r bg-card">
-      <div className="flex h-full flex-col gap-2 p-4">
+    <aside className="hidden lg:flex w-56 sidebar-gradient min-h-[calc(100vh-3.5rem)] flex-col">
+      <div className="flex flex-col gap-1 p-3 pt-4">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
-          
           return (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all",
+                "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all",
                 isActive
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  ? "bg-[hsl(var(--sidebar-active))] text-white shadow-sm"
+                  : "text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-hover))] hover:text-white"
               )}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-4 w-4" />
               <span>{item.label}</span>
             </button>
           );
