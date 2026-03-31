@@ -119,7 +119,7 @@ const Index = ({ staffName, onLogout }: IndexProps) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <Navbar staffName={staffName} onLogout={onLogout} />
       <div className="flex">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         <main className="flex-1 p-4 lg:p-6 overflow-auto">
