@@ -1,135 +1,141 @@
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Input } from "@/components/ui/input";
 
 interface AttendanceRecord {
   id: string;
-  name: string;
+  employee_code: string;
+  employee_name: string;
+  company: string;
   department: string;
-  inTime: string;
-  outTime: string;
-  totalHours: string;
-  status: "Present" | "Late" | "Absent";
-  date: string;
+  last_punch: string | null;
+  punch_records: string | null;
+  status: string;
+  attendance_date: string;
 }
 
-const mockData: AttendanceRecord[] = [
-  {
-    id: "1",
-    name: "Dr. Rajesh Kumar",
-    department: "Computer Science",
-    inTime: "09:00 AM",
-    outTime: "05:30 PM",
-    totalHours: "8.5",
-    status: "Present",
-    date: "2025-01-15",
-  },
-  {
-    id: "2",
-    name: "Prof. Priya Sharma",
-    department: "Mathematics",
-    inTime: "09:15 AM",
-    outTime: "05:45 PM",
-    totalHours: "8.5",
-    status: "Late",
-    date: "2025-01-15",
-  },
-  {
-    id: "3",
-    name: "Dr. Amit Patel",
-    department: "Physics",
-    inTime: "08:45 AM",
-    outTime: "05:15 PM",
-    totalHours: "8.5",
-    status: "Present",
-    date: "2025-01-15",
-  },
-  {
-    id: "4",
-    name: "Mrs. Lakshmi Reddy",
-    department: "Chemistry",
-    inTime: "09:00 AM",
-    outTime: "05:00 PM",
-    totalHours: "8.0",
-    status: "Present",
-    date: "2025-01-15",
-  },
-  {
-    id: "5",
-    name: "Prof. Suresh Menon",
-    department: "English",
-    inTime: "—",
-    outTime: "—",
-    totalHours: "0",
-    status: "Absent",
-    date: "2025-01-15",
-  },
-];
+interface AttendanceTableProps {
+  departmentFilter?: string;
+  statusFilter?: string;
+  searchQuery?: string;
+}
 
-export const AttendanceTable = () => {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Present":
-        return "bg-success/10 text-success hover:bg-success/20";
-      case "Late":
-        return "bg-warning/10 text-warning hover:bg-warning/20";
-      case "Absent":
-        return "bg-destructive/10 text-destructive hover:bg-destructive/20";
-      default:
-        return "";
+export const AttendanceTable = ({ departmentFilter, statusFilter, searchQuery }: AttendanceTableProps) => {
+  const [records, setRecords] = useState<AttendanceRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchRecords();
+  }, [departmentFilter, statusFilter]);
+
+  const fetchRecords = async () => {
+    setLoading(true);
+    let query = supabase.from("staff_attendance").select("*").order("employee_code", { ascending: true });
+    
+    if (departmentFilter && departmentFilter !== "all") {
+      query = query.eq("department", departmentFilter);
     }
+    if (statusFilter && statusFilter !== "all") {
+      query = query.eq("status", statusFilter);
+    }
+
+    const { data, error } = await query;
+    if (!error && data) setRecords(data);
+    setLoading(false);
   };
+
+  const filteredRecords = searchQuery
+    ? records.filter(r => 
+        r.employee_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        r.employee_code.includes(searchQuery) ||
+        r.department.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : records;
+
+  const getStatusColor = (status: string) => {
+    return status === "Present"
+      ? "bg-[hsl(var(--success))]/10 text-[hsl(var(--success))]"
+      : "bg-destructive/10 text-destructive";
+  };
+
+  const getInTime = (punchRecords: string | null) => {
+    if (!punchRecords) return "—";
+    const punches = punchRecords.split(",").filter(Boolean);
+    return punches[0] || "—";
+  };
+
+  const getOutTime = (punchRecords: string | null) => {
+    if (!punchRecords) return "—";
+    const punches = punchRecords.split(",").filter(Boolean);
+    return punches.length > 1 ? punches[punches.length - 1] : "—";
+  };
+
+  if (loading) {
+    return (
+      <Card className="card-shadow">
+        <CardContent className="flex items-center justify-center py-16">
+          <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--accent-teal))]" />
+          <span className="ml-3 text-muted-foreground">Loading attendance data...</span>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="card-shadow">
-      <CardHeader>
-        <CardTitle>Today's Attendance Records</CardTitle>
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">Today's Attendance Records</CardTitle>
+          <span className="text-sm text-muted-foreground">{filteredRecords.length} records</span>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Staff Name</TableHead>
-                <TableHead>Department</TableHead>
-                <TableHead>In-Time</TableHead>
-                <TableHead>Out-Time</TableHead>
-                <TableHead>Total Hours</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+              <TableRow className="bg-secondary/50">
+                <TableHead className="text-xs font-semibold">Code</TableHead>
+                <TableHead className="text-xs font-semibold">Staff Name</TableHead>
+                <TableHead className="text-xs font-semibold">Company</TableHead>
+                <TableHead className="text-xs font-semibold">Department</TableHead>
+                <TableHead className="text-xs font-semibold">In-Time</TableHead>
+                <TableHead className="text-xs font-semibold">Out-Time</TableHead>
+                <TableHead className="text-xs font-semibold">Punch Records</TableHead>
+                <TableHead className="text-xs font-semibold">Status</TableHead>
+                <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockData.map((record) => (
-                <TableRow key={record.id} className="hover:bg-secondary/50">
-                  <TableCell className="font-medium">{record.name}</TableCell>
+              {filteredRecords.map((record) => (
+                <TableRow key={record.id} className="hover:bg-secondary/30 text-sm">
+                  <TableCell className="font-mono text-xs">{record.employee_code}</TableCell>
+                  <TableCell className="font-medium">{record.employee_name}</TableCell>
+                  <TableCell className="text-xs">{record.company}</TableCell>
                   <TableCell>{record.department}</TableCell>
-                  <TableCell>{record.inTime}</TableCell>
-                  <TableCell>{record.outTime}</TableCell>
-                  <TableCell>{record.totalHours} hrs</TableCell>
+                  <TableCell>{getInTime(record.punch_records)}</TableCell>
+                  <TableCell>{getOutTime(record.punch_records)}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground max-w-[150px] truncate">
+                    {record.punch_records || "—"}
+                  </TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(record.status)}>
                       {record.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>{record.date}</TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Edit className="h-4 w-4" />
+                    <div className="flex justify-end gap-1">
+                      <Button variant="ghost" size="icon" className="h-7 w-7">
+                        <Edit className="h-3.5 w-3.5" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive">
-                        <Trash2 className="h-4 w-4" />
+                      <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive">
+                        <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </div>
                   </TableCell>
