@@ -14,7 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      departments: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      staff_attendance: {
+        Row: {
+          attendance_date: string
+          company: string
+          created_at: string
+          department: string
+          direction: string | null
+          employee_code: string
+          employee_name: string
+          id: string
+          last_punch: string | null
+          punch_records: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attendance_date?: string
+          company?: string
+          created_at?: string
+          department: string
+          direction?: string | null
+          employee_code: string
+          employee_name: string
+          id?: string
+          last_punch?: string | null
+          punch_records?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attendance_date?: string
+          company?: string
+          created_at?: string
+          department?: string
+          direction?: string | null
+          employee_code?: string
+          employee_name?: string
+          id?: string
+          last_punch?: string | null
+          punch_records?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
