@@ -9,7 +9,12 @@ import { DashboardFilters } from "@/components/DashboardFilters";
 import { Users, CheckCircle, XCircle, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const Index = () => {
+interface IndexProps {
+  staffName?: string;
+  onLogout?: () => void;
+}
+
+const Index = ({ staffName, onLogout }: IndexProps) => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -114,7 +119,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <Navbar staffName={staffName} onLogout={onLogout} />
       <div className="flex">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         <main className="flex-1 p-4 lg:p-6 overflow-auto">
