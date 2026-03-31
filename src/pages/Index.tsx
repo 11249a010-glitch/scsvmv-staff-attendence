@@ -9,7 +9,12 @@ import { DashboardFilters } from "@/components/DashboardFilters";
 import { Users, CheckCircle, XCircle, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const Index = () => {
+interface IndexProps {
+  staffName?: string;
+  onLogout?: () => void;
+}
+
+const Index = ({ staffName, onLogout }: IndexProps) => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
