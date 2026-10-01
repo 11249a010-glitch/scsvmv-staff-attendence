@@ -1,73 +1,112 @@
-# Welcome to your Lovable project
+# SCSVMV Staff Pulse (53)
 
-## Project info
+https://scsvmv-staff-pulse.lovable.app
+this is the one you given previously....its very good but update it like:
+Create a professional, AI-powered Staff Attendance Dashboard for SCSVMV University, designed with the same layout, color scheme, typography, and interactive style as the official Zoho website (https://www.zoho.com
+).
 
-**URL**: https://lovable.dev/projects/d46c989d-5236-4d8a-b005-d543fbc9eb24
+🎯 Purpose:
 
-## How can I edit this code?
+To display and automate daily staff attendance details, including In-Time, Out-Time, Department, Date, and Total Working Hours, updated automatically through AI integration.
 
-There are several ways of editing your application.
+🧠 Core Features:
 
-**Use Lovable**
+AI-Automation Panel: Automatically fetch and update staff attendance data every day.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d46c989d-5236-4d8a-b005-d543fbc9eb24) and start prompting.
+Smart Dashboard View:
 
-Changes made via Lovable will be committed automatically to this repo.
+Staff Name
 
-**Use your preferred IDE**
+Department
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+In-Time
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Out-Time
 
-Follow these steps:
+Total Working Hours
+
+Attendance Status (Present / Late / Absent)
+
+Filters & Sorting:
+
+Filter by Date, Department, or Staff Name
+
+Search bar with instant results
+
+Analytics Section (Zoho-style charts):
+
+Daily average in/out time trends
+
+Attendance percentage by department
+
+Graphical monthly summary
+
+Admin Controls:
+
+Add / Edit / Delete staff data manually if needed
+
+Export attendance as Excel or PDF
+
+Responsive Design:
+
+Clean, modern layout identical to Zoho’s design principles (minimalist cards, rounded edges, pastel color theme, clear typography, animated hover effects).
+
+AI Integration:
+
+Automatically detect attendance anomalies (e.g., missing punch, early leave)
+
+Suggest attendance corrections using AI logic.
+
+💻 Design & UI Style (Match Zoho Aesthetic):
+
+Primary Colors: #0053C9 (Zoho Blue), white, and light gray backgrounds
+
+UI Components: Cards, tables, charts, dropdown filters, animated graphs
+
+Typography: Clean Sans-serif fonts similar to Zoho’s interface (like “Open Sans” or “Lato”)
+
+Navbar: Left or top navigation with icons for Dashboard, Reports, AI Logs, and Settings
+
+Animations: Subtle transitions, hover highlights, and loading skeletons for data fetch
+
+🏛️ Branding:
+
+Title: SCSVMV University Staff Pulse Dashboard
+
+Subtitle: Powered by AI — Inspired by Zoho Interface
+
+Add SCSVMV University logo on the top-left corner
+
+Footer: “© SCSVMV University | Automated Staff Monitoring System”
+
+⚙️ Technical Features (optional for AI automation):
+
+Integration-ready for Google Sheets or internal attendance APIs
+
+AI Bot panel for attendance insights (“Which department had the most late entries today?”)
+
+Output Goal:
+A Zoho-style professional dashboard website that automatically visualizes and updates staff attendance (In-Time, Out-Time, Total Hours) for SCSVMV University, powered by AI-based automation and analytics.
+
+This project was built with [Lovable](https://lovable.dev).
+
+**Live app**: https://scsvmv-staff-attendence.lovable.app
+
+## Build with Lovable
+
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d46c989d-5236-4d8a-b005-d543fbc9eb24).
+
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+
+## Development
+
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+git clone <this-repository-url>
+cd <repository-name>
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/d46c989d-5236-4d8a-b005-d543fbc9eb24) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
